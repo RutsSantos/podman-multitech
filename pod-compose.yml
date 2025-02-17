@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  load-balancer:
+    image: nginx:latest
+    container_name: nginx-lb
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"  # Exponiendo el puerto 80 para acceder a través de HTTP
+    networks:
+      - app-network
+
   php:
     build: ./php-app
     container_name: php-container
@@ -12,6 +22,8 @@ services:
   java:
     build: ./java-app
     container_name: java-container
+    ports:
+      - "8080:8080"
     networks:
       - app-network
 
